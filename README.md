@@ -6,9 +6,14 @@ Junior Protocol:
 
 *protocol examples*:
 
-pack_message: hellow world --> 0012hellow world 
+pack_message: 
+hellow world --> 0012hellow world 
 
-unpack message: 0012hellow world --> hellow world
+unpack message: 
+0012hellow world --> hellow world
 
-parse_message:dir [path] -->DIR, [path]
-parse_message:dir -->DIR, None
+parse_message: 
+dir [path] -->DIR, [path]
+
+parse_message: 
+dir -->DIR, None
