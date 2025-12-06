@@ -1,8 +1,5 @@
-הסבר על הפרוטוקול:
-הפרוטוקול שלי תקף גם לשרת וגם ללקוח.
-כאשר הלקוח מכניס פקודה מרשימת הפקודות עם path, אני קורא לפונקציה pack_message עם הפקודה שנקלטה. הפונקציה לוקחת את הפקודה ובודקת את האורך שלה, לאחר מכן היא לוקחת את האורך ועושה לו zfill(4) (כך שלכל אורך הודעה יהיה אותו מספר ביטים), ולבסוף היא מעבירה אותו לutf-8 ומחזירה את המסר עם האורך שלו בתחילת הפקודה.
-בצד השני (של השרת) נמצאת הפונקציה unpack_message שלוקחת 4 ביטים מהבפר בידיעה שהם האורך של הפקודה ואז קוראת מהבפר את האורך שקיבלה ומחזירה את הפקודה המקורית לשרת. (כל זה קורה גם הפוך, לא רק בין הלקוח לשרת אלה גם בין השרת ללקוח מין הסתם).
+Explanation of the protocol:
+My protocol is valid for both the server and the client. When the client enters a command from the command list with a path, I call the pack_message function with the command that was received. The function takes the command and checks its length, then it takes the length and zfills it (so that each message length has the same number of bits), and finally it converts it to utf-8 and returns the message with its length at the beginning of the command. On the other side (of the server) is the unpack_message function that takes 4 bits from the buffer knowing that they are the length of the command and then reads the length it received from the buffer and returns the original command to the server. (This all happens the other way around, not only between the client and the server, but also between the server and the client).
 
-פרוטוקול ג׳וניור: (זהו לא בדיוק פרוטוקול תקשורת אבל אני כן חושב שאני צריך לציין אותו פה מכיוון שהוא חוקה בסיסית תמידית של איך השרת קורא את המסר של הלקוח)
-אחרי שהשרת השתמש ב unpack_message כדי לקבל את הפקודה המקורית הוא שולח אותה לפונקציה שנקראת parse_message שהיא בפשטות מחלקת את הפקודה לשני חלקים, לפעולה שהלקוח רוצה שהשרת יעשה (dir,copy,delete…) ול-path
-והיא גם מתייחסת לפקודות כמו screenshot שלא נשלחות עם path. ואחרי הפירוק היא מחזירה שני משתנים שהם ה-command וה-path.
+Junior Protocol:
+(This is not exactly a communication protocol but I do think I should mention it here because it is a basic and permanent constitution of how the server reads the client's message) After the server has used unpack_message to receive the original command, it sends it to a function called parse_message which simply divides the command into two parts, the action the client wants the server to do (dir, copy, delete…) and the path. it also handles commands like screenshot that are not sent with a path. After the decomposition, it returns two variables which are the command and the path.
