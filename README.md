@@ -2,4 +2,13 @@ Explanation of the protocol:
 My protocol is valid for both the server and the client. When the client enters a command from the command list with a path, I call the pack_message function with the command that was received. The function takes the command and checks its length, then it takes the length and zfills it (so that each message length has the same number of bits), and finally it converts it to utf-8 and returns the message with its length at the beginning of the command. On the other side (of the server) is the unpack_message function that takes 4 bits from the buffer knowing that they are the length of the command and then reads the length it received from the buffer and returns the original command to the server. (This all happens the other way around, not only between the client and the server, but also between the server and the client).
 
 Junior Protocol:
-(This is not exactly a communication protocol but I do think I should mention it here because it is a basic and permanent constitution of how the server reads the client's message) After the server has used unpack_message to receive the original command, it sends it to a function called parse_message which simply divides the command into two parts, the action the client wants the server to do (dir, copy, delete…) and the path. it also handles commands like screenshot that are not sent with a path. After the decomposition, it returns two variables which are the command and the path.
+(This is not exactly a communication protocol but I do think I should mention it here because it is a basic and permanent constitution of how the server reads the client's message) After the server has used unpack_message to receive the original command, it sends it to a function called parse_message which simply divides the command into two parts, the action the client wants the server to do (dir, copy, delete…) and the path. it also handles commands like screenshot that are not sent with a path. After the decomposition, it returns two variables which are the command (in caps lock) and the path.
+
+*protocol examples*:
+
+pack_message: hellow world --> 0012hellow world 
+
+unpack message: 0012hellow world --> hellow world
+
+parse_message:dir [path] -->DIR, [path]
+parse_message:dir -->DIR, None
